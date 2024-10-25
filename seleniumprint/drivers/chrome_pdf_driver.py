@@ -2,7 +2,7 @@ import base64
 from typing import Union
 import json
 from selenium import webdriver
-from selenium.webdriver.chrome.service import DEFAULT_EXECUTABLE_PATH
+from selenium.webdriver.chrome.service import Service
 from .i_selenium_pdf_driver import ISeleniumPDFDriver
 
 class ChromePDFDriver(ISeleniumPDFDriver):
@@ -35,9 +35,9 @@ class ChromePDFDriver(ISeleniumPDFDriver):
         chrome_options.add_argument("--kiosk-printing")
         if not kwargs.get("disable_headless") is True:
             chrome_options.add_argument("--headless")
-        chrome_driver_path = kwargs.get("chrome_driver_path") or DEFAULT_EXECUTABLE_PATH
+        chrome_driver_path = kwargs.get("chrome_driver_path")
         self.driver = webdriver.Chrome(
-            executable_path=chrome_driver_path, options=chrome_options
+            options=chrome_options, service=Service(executable_path=chrome_driver_path)
         )
 
     def load_page(self, url, *args, **kwargs):
